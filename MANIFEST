@@ -1,13 +1,15 @@
 Build.PL
 Changes
-MANIFEST
+MANIFEST this file
 META.yml
 Makefile.PL
 README
+LICENSE
+LICENSE.Artistic
+LICENSE.GPL
 lib/Test/Portability/Files.pm
 t/00load.t
 t/01basic.t
-t/distchk.t
 t/podcover.t
 t/pod.t
 t/portfs.t

@@ -1,5 +1,8 @@
 Revision history for Test-Portability-Files
 
+0.04    2004.10.20
+        Bugfix: now using ExtUtils::Manifest::maniread() to read MANIFEST.
+
 0.03    2004.09.25
         Directory names are also tested in normal mode. 
         Added test_dir_noext to check that directories have no extension. 

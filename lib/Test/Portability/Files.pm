@@ -1,5 +1,6 @@
 package Test::Portability::Files;
 use strict;
+use ExtUtils::Manifest qw(maniread);
 use File::Basename;
 use File::Find;
 use File::Spec;
@@ -7,7 +8,7 @@ use Test::Builder;
 require Exporter;
 
 { no strict;
-  $VERSION = '0.03';
+  $VERSION = '0.04';
   @ISA = qw(Exporter);
   @EXPORT = qw(&options &run_tests);
   @EXPORT_OK = @EXPORT;
@@ -88,7 +89,7 @@ Test::Portability::Files - Check file names portability
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =head1 SYNOPSIS
 
@@ -401,13 +402,8 @@ sub run_tests {
         
     } else {
         # check only against files listed in MANIFEST
-        open(MANIFEST, 'MANIFEST') or $Test->skip("Can't read MANIFEST!") and return;
-        
-        while(<MANIFEST>) {
-            chomp;
-            s/ *#.*$//g;
-            test_name_portability($_);
-        }
+        my $manifest = maniread();
+        map { test_name_portability($_) } keys %$manifest;
     }
     
     # check the results
