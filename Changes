@@ -1,5 +1,12 @@
 Revision history for Test-Portability-Files
 
+0.02    2004.07.04
+        Added test_symlink to check if a file is not a symbolic link. 
+        Added test vms_length to check against VMS limitations. 
+        Added test amiga_length to check against AmigaOS limitations. 
+        Added section "SEE ALSO".
+        Corrected my email address (d'oh!)
+
 0.01    2004.06.26
         First version, released on an unsuspecting world.
 

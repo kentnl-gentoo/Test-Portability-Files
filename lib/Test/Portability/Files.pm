@@ -7,7 +7,7 @@ use Test::Builder;
 require Exporter;
 
 { no strict;
-  $VERSION = '0.01';
+  $VERSION = '0.02';
   @ISA = qw(Exporter);
   @EXPORT = qw(&options &run_tests);
   @EXPORT_OK = @EXPORT;
@@ -38,8 +38,11 @@ my %tests = (
     special_chars => 1, 
     space         => 1, 
     mac_length    => 1, 
+    amiga_length  => 1, 
+    vms_length    => 1, 
     dos_length    => 0, 
     case          => 1, 
+   'symlink'      => 1, 
 );
 
 my %errors_text = (  # wrap the text at this column --------------------------------> |
@@ -55,13 +58,22 @@ my %errors_text = (  # wrap the text at this column ----------------------------
                     ."handled on several systems:\n", 
 
     mac_length    => "These files have a name more than 31 characters long, which\n"
-                    ."will be truncated on Mac OS Classic:\n", 
+                    ."will be truncated on Mac OS Classic and old AmigaOS:\n", 
+
+    amiga_length  => "These files have a name more than 107 characters long, which\n"
+                    ."will be truncated on recent AmigaOS:\n", 
+
+    vms_length    => "These files have a name or extension too long for VMS (both\n"
+                    ."are limited to 39 characters):\n", 
 
     dos_length    => "These files have a name too long for MS-DOS and compatible\n"
                     ."systems:\n", 
 
     case          => "The name of these files differ only by the case, which can\n"
                     ."cause real problems on case-insensitive filesystems:", 
+
+   'symlink'      => "The following files are symbolic links, which are not\n"
+                    ."supported on several operating systems:", 
 );
 
 my %bad_names = ();
@@ -79,7 +91,7 @@ Version 0.01
 
     use Test::More;
     eval "use Test::Portability::Files";
-    plan skip_all => "Test::Portability::Files required for testing file names portability" if $@;
+    plan skip_all => "Test::Portability::Files required for testing filenames portability" if $@;
     options(all_tests => 1);  # to be hyper-strict
     run_tests();
 
@@ -101,6 +113,7 @@ Here are the default options:
 
     use_file_find is not enabled (check only the names as listed in MANIFEST)
 
+    test_amiga_length is enabled
     test_ansi_chars is enabled
     test_case is enabled
     test_dos_length is not enabled
@@ -108,6 +121,8 @@ Here are the default options:
     test_one_dot is enabled
     test_space is enabled
     test_special_chars is enabled
+    test_symlink is enabled
+    test_vms_length is enabled
 
 To change any option, please see C<options()>. 
 
@@ -160,6 +175,11 @@ C<all_tests> - select all tests.
 
 =item *
 
+C<test_amiga_length> - check that the name fits within AmigaOS name length 
+limitations (107 characters). 
+
+=item *
+
 C<test_ansi_chars> - check that the name only uses the portable filename 
 characters as defined by S<ANSI C> and recommended by L<perlport>. 
 
@@ -170,12 +190,12 @@ the name of another file on case-insensitive filesystems.
 
 =item *
 
-C<test_dos_length> - check that the name is inside DOS name length limitations 
+C<test_dos_length> - check that the name fits within DOS name length limitations 
 (8 characters max for the base name, 3 characters max for the extension). 
 
 =item *
 
-C<test_mac_length> - check that the name is inside Mac OS Classic name length 
+C<test_mac_length> - check that the name fits within Mac OS Classic name length 
 limitations (31 characters). 
 
 =item *
@@ -189,6 +209,15 @@ C<test_space> - check that the name has nos space.
 =item *
 
 C<test_special_chars> - check that the name does not use special characters. 
+
+=item *
+
+C<test_symlink> - check that the file is not a symbolic link.
+
+=item *
+
+C<test_vms_length> - check that the name fits within VMS name length limitations 
+(39 characters max for the base name, 39 characters max for the extension). 
 
 =back
 
@@ -270,6 +299,17 @@ sub test_name_portability {
         length > 31 and $bad_names{$file} .= 'mac_length,'
     }
     
+    # check the length of the name, compared to AmigaOS max length
+    if($tests{amiga_length}) {
+        length > 107 and $bad_names{$file} .= 'amiga_length,'
+    }
+    
+    # check the length of the name, compared to VMS max length
+    if($tests{vms_length}) {
+        ( length($file_name) <= 39 and length($file_ext) <= 40 ) 
+          or $bad_names{$file} .= 'vms_length,'
+    }
+    
     # check the length of the name, compared to DOS max length
     if($tests{dos_length}) {
         ( length($file_name) <= 8 and length($file_ext) <= 4 ) 
@@ -283,6 +323,13 @@ sub test_name_portability {
             $bad_names{$lc_names{lc $file}} .= 'case,';
         } else {
             $lc_names{lc $file} = $file
+        }
+    }
+    
+    # check if the file is a symbolic link
+    if($tests{'symlink'}) {
+        if(-l $file) {
+            $bad_names{$file} .= 'symlink,'
         }
     }
 }
@@ -339,9 +386,13 @@ sub run_tests {
 
 =back
 
+=head1 SEE ALSO
+
+perlport
+
 =head1 AUTHOR
 
-SE<eacute>bastien Aperghis-Tramoni, E<lt>sebastien@perghis.netE<gt>
+SE<eacute>bastien Aperghis-Tramoni, E<lt>sebastien@aperghis.netE<gt>
 
 =head1 BUGS
 

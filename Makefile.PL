@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'Test::Portability::Files',
-    AUTHOR              => 'Sebastien Aperghis-Tramoni <sebastien@perghis.net>',
+    AUTHOR              => 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>',
     VERSION_FROM        => 'lib/Test/Portability/Files.pm',
     ABSTRACT_FROM       => 'lib/Test/Portability/Files.pm',
     PL_FILES            => {},

@@ -4,7 +4,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'Test::Portability::Files',
     license             => 'perl',
-    dist_author         => 'Sebastien Aperghis-Tramoni <sebastien@perghis.net>',
+    dist_author         => 'Sébastien Aperghis-Tramoni <sebastien@aperghis.net>',
     dist_version_from   => 'lib/Test/Portability/Files.pm',
     requires => {
         'File::Basename' => 0, 
