@@ -1,5 +1,10 @@
 Revision history for Test-Portability-Files
 
+0.05    2004.11.21
+        Bugfix: corrected test for special chars
+        Bugfix: disabled calling test_name_portability() on individual 
+        directory names
+
 0.04    2004.10.20
         Bugfix: now using ExtUtils::Manifest::maniread() to read MANIFEST.
 

@@ -8,7 +8,7 @@ use Test::Builder;
 require Exporter;
 
 { no strict;
-  $VERSION = '0.04';
+  $VERSION = '0.05';
   @ISA = qw(Exporter);
   @EXPORT = qw(&options &run_tests);
   @EXPORT_OK = @EXPORT;
@@ -89,7 +89,7 @@ Test::Portability::Files - Check file names portability
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =head1 SYNOPSIS
 
@@ -307,10 +307,9 @@ sub test_name_portability {
         $file = shift;
         ($file_name,$file_path,$file_ext) = fileparse($file, '\\.[^.]+?');
         
-        for my $dir (File::Spec->splitdir(File::Spec->canonpath($file_path))) {
-            next if $dir eq File::Spec->curdir;
-            test_name_portability($dir)
-        }
+        #for my $dir (File::Spec->splitdir(File::Spec->canonpath($file_path))) {
+        #    test_name_portability($dir)
+        #}
         
         $_ = $file_name.$file_ext;
     }
@@ -335,7 +334,7 @@ sub test_name_portability {
     
     # check if the name contains special chars
     if($tests{special_chars}) {
-        m-!"#\$%&'\(\)\*\+/:;<>\?@\[\\\]^`\{\|\}~- 
+        m-[!"#\$%&'\(\)\*\+/:;<>\?@\[\\\]^`\{\|\}~]- 
           and $bad_names{$file} .= 'special_chars,'
     }
     
