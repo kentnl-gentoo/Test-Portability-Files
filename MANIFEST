@@ -1,0 +1,11 @@
+Build.PL
+Changes
+MANIFEST
+META.yml
+Makefile.PL
+README
+lib/Test/Portability/Files.pm
+t/00load.t
+t/podcover.t
+t/pod.t
+t/portfs.t

@@ -1,0 +1,17 @@
+--- #YAML:1.0
+name: Test-Portability-Files
+version: 0.01
+author: Sebastien Aperghis-Tramoni <sebastien@perghis.net>
+abstract: Check file names portability
+license: perl
+requires:
+  File::Basename: 0
+  File::Find: 0
+  File::Spec: 0
+  Test::Builder: 0
+  Test::More: 0
+provides:
+  Test::Portability::Files:
+    file: lib/Test/Portability/Files.pm
+    version: 0.01
+generated_by: Module::Build version 0.25
