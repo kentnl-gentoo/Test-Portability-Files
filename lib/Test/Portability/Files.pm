@@ -7,7 +7,7 @@ use Test::Builder;
 require Exporter;
 
 { no strict;
-  $VERSION = '0.02';
+  $VERSION = '0.03';
   @ISA = qw(Exporter);
   @EXPORT = qw(&options &run_tests);
   @EXPORT_OK = @EXPORT;
@@ -35,6 +35,7 @@ my %options = (
 my %tests = (
     ansi_chars    => 1,  
     one_dot       => 1, 
+    dir_noext     => 1, 
     special_chars => 1, 
     space         => 1, 
     mac_length    => 1, 
@@ -50,6 +51,8 @@ my %errors_text = (  # wrap the text at this column ----------------------------
                     ."as defined by ANSI C and perlport:\n", 
 
     one_dot       => "These files contain more than one dot in their name:\n", 
+
+    dir_noext     => "These directories have an extension in their name:\n", 
 
     special_chars => "These files contain special characters that may break on\n".
                      "several systems, please correct:\n", 
@@ -85,7 +88,7 @@ Test::Portability::Files - Check file names portability
 
 =head1 VERSION
 
-Version 0.01
+Version 0.03
 
 =head1 SYNOPSIS
 
@@ -108,21 +111,57 @@ You can delete the call to C<options()> to enable only most common tests.
 
 By default, not all tests are enabled because some are judged too cumbersome 
 to be practical, especially since some of the most limited platforms (like 
-MS-DOS) seems to be no longer supported. 
+MS-DOS) seem to be no longer supported. 
 Here are the default options: 
 
-    use_file_find is not enabled (check only the names as listed in MANIFEST)
+=over 4
 
-    test_amiga_length is enabled
-    test_ansi_chars is enabled
-    test_case is enabled
-    test_dos_length is not enabled
-    test_mac_length is enabled
-    test_one_dot is enabled
-    test_space is enabled
-    test_special_chars is enabled
-    test_symlink is enabled
-    test_vms_length is enabled
+=item *
+
+C<use_file_find> is I<not> enabled (check only the names as listed 
+in F<MANIFEST>)
+
+=item *
+
+C<test_amiga_length> is enabled
+
+=item *
+
+C<test_ansi_chars> is enabled
+
+=item *
+
+C<test_case> is enabled
+
+=item *
+
+C<test_dos_length> is I<not> enabled
+
+=item *
+
+C<test_mac_length> is enabled
+
+=item *
+
+C<test_one_dot> is enabled
+
+=item *
+
+C<test_space> is enabled
+
+=item *
+
+C<test_special_chars> is enabled
+
+=item *
+
+C<test_symlink> is enabled
+
+=item *
+
+C<test_vms_length> is enabled
+
+=back
 
 To change any option, please see C<options()>. 
 
@@ -135,11 +174,11 @@ The following functions are exported:
 
 =item *
 
-options()
+C<options()>
 
 =item *
 
-run_tests()
+C<run_tests()>
 
 =back
 
@@ -148,7 +187,7 @@ run_tests()
 
 =over 4
 
-=item options
+=item C<options()>
 
 Set the module options, in particular, select which tests to execute. 
 Expects a hash. 
@@ -187,6 +226,10 @@ characters as defined by S<ANSI C> and recommended by L<perlport>.
 
 C<test_case> - check that the name of the file does not clash with 
 the name of another file on case-insensitive filesystems.
+
+=item *
+
+C<test_dir_noext> - check that the directory has no extension.
 
 =item *
 
@@ -240,7 +283,7 @@ sub options {
     @tests{keys %tests} = (1)x(keys %tests) if $opts{all_tests};
 }
 
-=item test_name_portability
+=item C<test_name_portability()>
 
 Test the portability of the given file name. 
 
@@ -262,15 +305,21 @@ sub test_name_portability {
     } else {  # only check against MANIFEST
         $file = shift;
         ($file_name,$file_path,$file_ext) = fileparse($file, '\\.[^.]+?');
+        
+        for my $dir (File::Spec->splitdir(File::Spec->canonpath($file_path))) {
+            next if $dir eq File::Spec->curdir;
+            test_name_portability($dir)
+        }
+        
         $_ = $file_name.$file_ext;
     }
-  #print STDERR "file $file\t=> path='$file_path', name='$file_name', ext='$file_ext'\n";
+    #print STDERR "file $file\t=> path='$file_path', name='$file_name', ext='$file_ext'\n";
     
     # After this point, the following variables are expected to hold these semantics
-    #   $file must contain the full path to the file (t/00load.t)
+    #   $file must contain the path to the file (t/00load.t)
     #   $_ must contain the full name of the file (00load.t)
     #   $file_name must contain the base name of the file (00load)
-    #   $file_path must contain the path to the file (t/)
+    #   $file_path must contain the path to the directory containing the file (t/)
     #   $file_ext must contain the extension (if any) of the file (.t)
     
     # check if the name only uses portable filename characters, as defined by ANSI C
@@ -318,7 +367,7 @@ sub test_name_portability {
     
     # check if the name is unique on case-insensitive filesystems
     if($tests{case}) {
-        if($lc_names{lc $file}) {
+        if(not $lc_names{$file} and $lc_names{lc $file}) {
             $bad_names{$file} .= 'case,';
             $bad_names{$lc_names{lc $file}} .= 'case,';
         } else {
@@ -328,13 +377,16 @@ sub test_name_portability {
     
     # check if the file is a symbolic link
     if($tests{'symlink'}) {
-        if(-l $file) {
-            $bad_names{$file} .= 'symlink,'
-        }
+        -l $file and $bad_names{$file} .= 'symlink,'
+    }
+    
+    # if it's a directory, check that it has no extension
+    if($tests{'dir_noext'}) {
+        -d $file and tr/.// > 0 and $bad_names{$file} .= 'dir_noext,'
     }
 }
 
-=item run_tests
+=item C<run_tests()>
 
 Execute the tests selected by C<options()>. 
 
@@ -388,7 +440,7 @@ sub run_tests {
 
 =head1 SEE ALSO
 
-perlport
+L<perlport>
 
 =head1 AUTHOR
 
