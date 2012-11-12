@@ -1,0 +1,35 @@
+Test::Portability::Files
+========================
+
+DESCRIPTION
+
+    This module is used to check the portability across operating systems 
+    of the names of the files present in the distribution of a module. 
+    The checks use the advices given in perlport. 
+    The author of the distribution can select which points to test. 
+
+
+INSTALLATION
+
+    To install this module, run the following commands:
+
+        perl Makefile.PL
+        make
+        make test
+        make install
+
+    Alternatively, to install with Module::Build, you can use the 
+    following commands:
+
+        perl Build.PL
+        ./Build
+        ./Build test
+        ./Build install
+
+
+COPYRIGHT AND LICENCE
+
+    Copyright (C) 2004 Sébastien Aperghis-Tramoni
+
+    This library is free software; you can redistribute it and/or modify
+    it under the same terms as Perl itself.
