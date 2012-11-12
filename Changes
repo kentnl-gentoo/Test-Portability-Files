@@ -1,4 +1,6 @@
-Revision history for Test-Portability-Files
+{{ $NEXT }}
+        - created git repository on github.com
+        - converted to Dist::Zilla
 
 0.05    2004.11.21
         Bugfix: corrected test for special chars
