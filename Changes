@@ -4,6 +4,7 @@
         - fixed options cannot take a false value (RT#21631)
         - disabled Mac OS Classic test by default because it is no longer
           supported by Perl itself (RT#12182)
+        - updated synopsis to show recommended author-only usage (RT#43948)
 
 0.05    2004.11.21
         Bugfix: corrected test for special chars

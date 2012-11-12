@@ -96,10 +96,14 @@ my %lc_names  = ();
 =head1 SYNOPSIS
 
     use Test::More;
-    eval "use Test::Portability::Files";
-    plan skip_all => "Test::Portability::Files required for testing filenames portability" if $@;
+
+    plan skip_all => "Only for the module maintainer" unless $ENV{AUTHOR_TESTS};
+    plan skip_all => "Test::Portability::Files required for testing filenames portability"
+        unless eval "use Test::Portability::Files; 1";
+
     options(all_tests => 1);  # to be hyper-strict
     run_tests();
+
 
 =head1 DESCRIPTION
 
