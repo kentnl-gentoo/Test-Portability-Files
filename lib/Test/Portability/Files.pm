@@ -40,7 +40,7 @@ my %tests = (
     dir_noext     => 1,
     special_chars => 1,
     space         => 1,
-    mac_length    => 1,
+    mac_length    => 0,
     amiga_length  => 1,
     vms_length    => 1,
     dos_length    => 0,
@@ -142,7 +142,7 @@ C<test_dos_length> is I<not> enabled
 
 =item *
 
-C<test_mac_length> is enabled
+C<test_mac_length> is I<not> enabled
 
 =item *
 
