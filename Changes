@@ -1,4 +1,6 @@
 {{ $NEXT }}
+
+0.06      2012-11-12 19:24:46 Europe/Vienna
         - created git repository on github.com
         - converted to Dist::Zilla
         - fixed options cannot take a false value (RT#21631)
