@@ -1,6 +1,7 @@
 {{ $NEXT }}
         - created git repository on github.com
         - converted to Dist::Zilla
+        - fixed options cannot take a false value (RT#21631)
 
 0.05    2004.11.21
         Bugfix: corrected test for special chars

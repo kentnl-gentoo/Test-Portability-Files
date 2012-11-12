@@ -278,12 +278,13 @@ selects all tests and runs them against all files found using C<File::Find>.
 sub options {
     my %opts = @_;
     for my $test ( keys %tests ) {
-        $tests{$test} = $opts{"test_$test"} if $opts{"test_$test"};
+        $tests{$test} = $opts{"test_$test"} if exists $opts{"test_$test"};
     }
     for my $opt ( keys %options ) {
-        $options{$opt} = $opts{$opt} if $opts{$opt};
+        $options{$opt} = $opts{$opt} if exists $opts{$opt};
     }
-    @tests{ keys %tests } = (1) x ( keys %tests ) if $opts{all_tests};
+    @tests{ keys %tests } = ( $opts{all_tests} ) x ( keys %tests )
+        if exists $opts{all_tests};
 }
 
 =item C<test_name_portability()>
