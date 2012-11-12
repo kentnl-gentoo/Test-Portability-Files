@@ -41,7 +41,7 @@ my %tests = (
     special_chars => 1,
     space         => 1,
     mac_length    => 0,
-    amiga_length  => 1,
+    amiga_length  => 0,
     vms_length    => 1,
     dos_length    => 0,
     case          => 1,
@@ -130,7 +130,7 @@ in F<MANIFEST>)
 
 =item *
 
-C<test_amiga_length> is enabled
+C<test_amiga_length> is I<not> enabled
 
 =item *
 
