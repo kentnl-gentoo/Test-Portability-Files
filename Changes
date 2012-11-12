@@ -1,4 +1,10 @@
-Revision history for Test-Portability-Files
+0.06      2012-11-12 19:24:46 Europe/Vienna
+        - created git repository on github.com
+        - converted to Dist::Zilla
+        - fixed options cannot take a false value (RT#21631)
+        - disabled AmigaOS and Mac OS Classic tests by default because they are
+          no longer supported by Perl itself (RT#12182)
+        - updated synopsis to show recommended author-only usage (RT#43948)
 
 0.05    2004.11.21
         Bugfix: corrected test for special chars
