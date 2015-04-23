@@ -433,12 +433,13 @@ sub run_tests {
     }
 
     # check the results
-    if ( keys %bad_names ) {
+    my $bad_names = _bad_names();
+    if ( keys %$bad_names ) {
         $Test->ok( 0, "File names portability" );
 
         my %errors_list = ();
-        for my $file ( keys %bad_names ) {
-            for my $error ( split ',', $bad_names{$file} ) {
+        for my $file ( keys %$bad_names ) {
+            for my $error ( split ',', $bad_names->{$file} ) {
                 $errors_list{$error} = [] if not ref $errors_list{$error};
                 push @{ $errors_list{$error} }, $file;
             }
@@ -460,6 +461,12 @@ sub run_tests {
 }
 
 =back
+
+=cut
+
+sub _bad_names {
+    return \%bad_names;
+}
 
 =head1 SEE ALSO
 
