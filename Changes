@@ -1,3 +1,5 @@
+Revision history for {{ $dist->name }}
+
 {{ $NEXT }}
         - relax the ansi_chars check to allow for . and _ as the leading
           character of a filename
