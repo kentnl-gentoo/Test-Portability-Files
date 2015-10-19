@@ -1,0 +1,4 @@
+/.build/
+!/.gitignore
+/Test-Portability-Files-*/
+/Test-Portability-Files-*.tar.gz
