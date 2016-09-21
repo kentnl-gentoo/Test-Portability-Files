@@ -1,8 +1,5 @@
 package Test::Portability::Files;
-{
-  $Test::Portability::Files::VERSION = '0.06';
-}
-
+$Test::Portability::Files::VERSION = '0.07';
 # ABSTRACT: Check file names portability
 use strict;
 use warnings;
@@ -148,7 +145,7 @@ sub test_name_portability {
 
 # check if the name only uses portable filename characters, as defined by ANSI C
     if ( $tests{ansi_chars} ) {
-        /^[A-Za-z0-9][A-Za-z0-9._-]*$/ or $bad_names{$file} .= 'ansi_chars,';
+        /^[A-Za-z0-9._][A-Za-z0-9._-]*$/ or $bad_names{$file} .= 'ansi_chars,';
     }
 
     # check if the name contains more than one dot
@@ -261,13 +258,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Test::Portability::Files - Check file names portability
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -346,8 +345,6 @@ C<test_vms_length> is enabled
 =back
 
 To change any option, please see C<options()>.
-
-=encoding utf8
 
 =head1 EXPORT
 
@@ -489,7 +486,7 @@ Alexander Hartmaier <abraxxa@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Sébastien Aperghis-Tramoni, Alexander Hartmaier.
+This software is copyright (c) 2016 by Sébastien Aperghis-Tramoni, Alexander Hartmaier.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

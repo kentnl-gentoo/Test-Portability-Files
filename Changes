@@ -1,3 +1,9 @@
+Revision history for Test-Portability-Files
+
+0.07      2016-09-21 23:49:46+02:00 Europe/Vienna
+        - relax the ansi_chars check to allow for . and _ as the leading
+          character of a filename
+
 0.06      2012-11-12 19:24:46 Europe/Vienna
         - created git repository on github.com
         - converted to Dist::Zilla
