@@ -1,6 +1,8 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+
+0.07      2016-09-21 23:49:46+02:00 Europe/Vienna
         - relax the ansi_chars check to allow for . and _ as the leading
           character of a filename
 
