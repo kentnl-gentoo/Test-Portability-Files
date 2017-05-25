@@ -46,6 +46,7 @@ my %tests = (
     dos_length    => 0,
     case          => 1,
     'symlink'     => 1,
+    windows_reserved => 1,
 );
 
 my %errors_text =
@@ -167,6 +168,10 @@ C<test_symlink> is enabled
 =item *
 
 C<test_vms_length> is enabled
+
+=item *
+
+C<windows_reserved> is enabled
 
 =back
 
@@ -338,6 +343,11 @@ sub test_name_portability {
 # check if the name only uses portable filename characters, as defined by ANSI C
     if ( $tests{ansi_chars} ) {
         /^[A-Za-z0-9._][A-Za-z0-9._-]*$/ or $bad_names{$file} .= 'ansi_chars,';
+    }
+
+    # check if the name is a Windows Reserved Filename
+    if ( $tests{'windows_reserved'} ) {
+      /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])[.]?/i and $bad_names{$file} .= 'windows_reserved,';
     }
 
     # check if the name contains more than one dot
