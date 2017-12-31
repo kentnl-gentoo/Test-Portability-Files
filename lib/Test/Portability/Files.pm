@@ -347,7 +347,8 @@ sub test_name_portability {
 
     # check if the name is a Windows Reserved Filename
     if ( $tests{'windows_reserved'} ) {
-      /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])[.]?/i and $bad_names{$file} .= 'windows_reserved,';
+        $file_name =~ /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i
+            and $bad_names{$file} .= 'windows_reserved,';
     }
 
     # check if the name contains more than one dot

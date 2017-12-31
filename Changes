@@ -1,6 +1,7 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+        - fix regex for windows reserved files
 
 0.08      2017-12-30 14:39:55+01:00 Europe/Vienna
         - add windows_reserved option to test for Windows reserved filenames
