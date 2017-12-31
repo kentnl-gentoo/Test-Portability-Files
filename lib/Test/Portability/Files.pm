@@ -1,5 +1,5 @@
 package Test::Portability::Files;
-$Test::Portability::Files::VERSION = '0.08';
+$Test::Portability::Files::VERSION = '0.09';
 # ABSTRACT: Check file names portability
 use strict;
 use warnings;
@@ -151,7 +151,8 @@ sub test_name_portability {
 
     # check if the name is a Windows Reserved Filename
     if ( $tests{'windows_reserved'} ) {
-      /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])[.]?/i and $bad_names{$file} .= 'windows_reserved,';
+        $file_name =~ /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i
+            and $bad_names{$file} .= 'windows_reserved,';
     }
 
     # check if the name contains more than one dot
@@ -231,12 +232,13 @@ sub run_tests {
     }
 
     # check the results
-    if ( keys %bad_names ) {
+    my $bad_names = _bad_names();
+    if ( keys %$bad_names ) {
         $Test->ok( 0, "File names portability" );
 
         my %errors_list = ();
-        for my $file ( keys %bad_names ) {
-            for my $error ( split ',', $bad_names{$file} ) {
+        for my $file ( keys %$bad_names ) {
+            for my $error ( split ',', $bad_names->{$file} ) {
                 $errors_list{$error} = [] if not ref $errors_list{$error};
                 push @{ $errors_list{$error} }, $file;
             }
@@ -258,6 +260,11 @@ sub run_tests {
 }
 
 
+sub _bad_names {
+    return \%bad_names;
+}
+
+
 1;
 
 __END__
@@ -272,7 +279,7 @@ Test::Portability::Files - Check file names portability
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

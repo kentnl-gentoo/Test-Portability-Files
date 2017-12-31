@@ -18,6 +18,7 @@ my @files = (
     'lib/Test/Portability/Files.pm',
     't/00-compile.t',
     't/01basic.t',
+    't/02filenames.t',
     't/author-critic.t',
     't/author-eol.t',
     't/author-mojibake.t',
