@@ -1,7 +1,7 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
-        - fix regex for windows reserved files
+        - fix regex for windows reserved files (RT#123972)
         - add tests, now requires Perl 5.008
 
 0.08      2017-12-30 14:39:55+01:00 Europe/Vienna
